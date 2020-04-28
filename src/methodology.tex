@@ -52,12 +52,11 @@ To have a fair evaluation, then, we choose for each class of devices the codes t
 
 \textbf{Matrix Multiplication (MxM)} is representative of highly arithmetic compute-bound codes used in HPC and for features extraction in CNNs. 
 
-\textbf{LUD} is a linear algebra method that calculates solutions for a square system of linear equations.%, representative of highly compute-bound codes~\cite{lava2009}. 
+\textbf{LUD} calculates the solutions for a square system of linear equations.%, representative of highly compute-bound codes~\cite{lava2009}. 
 
 \textbf{LavaMD} simulates particle interactions using Finite Difference Methods. %LavaMD is compute bound, being mostly composed of dot-products. 
 
-\textbf{Hotspot} is representative of stencil solvers, it estimates the processor temperature using an architectural
-floor plan and simulated power measurements. 
+\textbf{Hotspot} estimates the temperature of a processor surface, using a floor plan and simulated power measurements. It is representative of stencil solvers. 
 
 \textbf{Stream Compaction (SC)} is a memory-bound code used in databases and image processing applications. SC is composed of a data manipulation primitive that removes elements from an array.
 
@@ -81,11 +80,11 @@ floor plan and simulated power measurements.
 \label{rad_setup}
 \end{figure}
 
-To evaluate the sensitivity of our devices to high energy and thermal neutrons we exposed the devices on two different beamlines at the ISIS spallation neutron source in the UK: ChipIR for high energy neutrons and ROTAX for thermal neutrons.
-ChipIR~\cite{cazzaniga2018progress} is the reference beamline dedicated to the irradiation of microelectronics and it features a high energy neutron spectrum, as similar as possible to the atmospheric one. The flux with neutron energy above 10 MeV is $5.4 \times {10}^6 n/{cm}^2/s$, while the thermal component ($E < 0.5 eV$) is $4 \times {10}^5 n/{cm}^2/s$~\cite{chiesa2018measurement}.
-ROTAX~\cite{tietze1989rotax} is a general purpose beamline with a thermal neutron spectrum generating a flux of $2.72\times{10}^6 n/{cm}^2/s$. Here the thermalization is achieved by moderation of the neutrons using liquid methane. 
+To measure the sensitivity of our devices to high energy and thermal neutrons we exposed the devices on two different beamlines at the ISIS spallation neutron source in the UK: ChipIR, that delivers high energy neutrons, and ROTAX, that delivers neutrons with thermal energies.
+ChipIR~\cite{cazzaniga2018progress} is the reference beamline explicitly built to irradiate electronic devices and it features a high energy neutron spectrum, as similar as possible to the atmospheric one. The flux with neutron energy above 10 MeV is about $5 \times {10}^6 n/{cm}^2/s$, while the thermal component ($E < 0.5 eV$) is $4 \times {10}^5 n/{cm}^2/s$~\cite{chiesa2018measurement}.
+ROTAX~\cite{tietze1989rotax} is not specifically designed for the test of electronic components and delivers a flux of $2.72\times{10}^6 n/{cm}^2/s$ in the thermal spectrum. Here the thermalization is achieved by moderation of the neutrons using liquid methane. 
 
-The spectra of the two beamlines are compared in Figure~\ref{rotax_chipir} on a log-log scale where the fluxes are proportional to the areas under the curves. As Figure~\ref{rotax_chipir} suggests, most neutrons in ROTAX are thermals and most neutron in ChipIR are high energy one.
+Figure~\ref{rotax_chipir} shows, on a log-log scale, the neutron spectrum of energy of the two beam lines. Fluxes are proportional to the areas under the curves. As Figure~\ref{rotax_chipir} suggests, most neutrons in ROTAX are thermals and most neutron in ChipIR are high energy one. 
 
 %To evaluate the sensitivity to thermal and high energy neutrons we align the devices described in Section~\ref{subsec_devices} with the beam, while executing the codes listed in Section~\ref{subsec_codes}. The device output is compared with a pre-computed fault-free copy and any mismatch is marked as an SDC. If the application dies, gets stuck, or the device stops responding we count this as a DUE. Dividing the number of observed errors with the fluence the device has received we can calculate the device sensitivity, expressed as \textbf{cross section} [$cm^2$]. 
 %The higher the cross section, the higher the probability for one neutron (either thermal or high energy) to generate an observable error (either SDC or DUE). 
@@ -94,7 +93,9 @@ The spectra of the two beamlines are compared in Figure~\ref{rotax_chipir} on a 
 %same physical devices executing the codes with the same input vector both in ROTAX and in ChipIR. It is worth noting that, apart from DDR that experienced permanent faults, testing the same device at ROTAX and then at ChipIR (or the other way around) does not influence the measured error rates.
 %The only difference between the two experiments is that, thanks to the higher neutron energies, at ChipIR we can align various boards with the beam, as shown in Figure~\ref{rad_setup}. Using a derating factor that takes distance into account we can measure the sensitivity of multiple devices in parallel. In ROTAX, as the irradiate devices stop most of the incoming thermal neutrons, we must test one device at a time. In Figure~\ref{rad_setup} we show the setup for the Titan V evaluation. 
 
-To evaluate the sensitivity to thermal and high energy neutrons we align the devices with the beam, while executing the codes. The device output is compared with a pre-computed fault-free copy and any mismatch is marked as an SDC. If the device stops responding we count a DUE.  To eliminate any setup-dependent differences between thermal and high energy neutrons, we irradiate the same physical devices executing the codes with the same input both in ROTAX and in ChipIR. The only difference between the two experiments is that at ChipIR we can align various boards with the beam, as shown in Figure~\ref{rad_setup}. Using a derating factor that takes distance into account we can measure the sensitivity of multiple devices in parallel. In ROTAX, as the irradiate device block most of the incoming neutrons, we must test one device at a time.
+Silent Data Corruptions (SDCs) are detected comparing the output of the irradiated device with a fault-free copy that has been previously calculated. A watchdog is used to detect Detected Unrecoverable Errors (DUEs). At ChipIR, as depicted Figure~\ref{rad_setup}, we can test multiple boards aligned with the beam to increase statistic. At ROTAX, because of the much lower energy, neutrons are not able to penetrate more than one board, so we test only one device at a time. To have the most accurate comparison between high energy and thermal neutron sensitivity we test at ChipIR and at ROTAX exactly the same physical device and exactly the same setup (same code, same input, same motherboard, etc...).
+
+%To evaluate the sensitivity to thermal and high energy neutrons we align the devices with the beam, while executing the codes. The device output is compared with a pre-computed fault-free copy and any mismatch is marked as an SDC. If the device stops responding we count a DUE. To eliminate any setup-dependent differences between thermal and high energy neutrons, we irradiate the same physical devices executing the codes with the same input both in ROTAX and in ChipIR. The only difference between the two experiments is that at ChipIR we can align various boards with the beam, as shown in Figure~\ref{rad_setup}. Using a derating factor that takes distance into account we can measure the sensitivity of multiple devices in parallel. In ROTAX, as the irradiate device block most of the incoming neutrons, we must test one device at a time.
 %Due to limitations in the thermal neutrons experiment, we could only test one sample of each device. The high energy neutrons error rate variation among different samples of the same device has already been shown to be low, recent works indicate a variation of about 10\%~\cite{sc2017,Oliveira2017}. 
 
 
